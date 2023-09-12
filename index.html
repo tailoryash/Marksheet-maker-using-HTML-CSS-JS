@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Marksheet maker</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9"
+      crossorigin="anonymous"
+    />
+    <link href="/css/style.css" rel="stylesheet" />
+
+    <script src="/js/script.js"></script>
+  </head>
+  <body>
+    <h1>Welcome to Promount Technologies</h1>
+
+    <div class="container row mx-auto col-10 col-md-8 col-lg-6 card">
+      <div class="card-header text-center fw-bold blockquote">
+        Create your marksheet here
+      </div>
+      <div class="card-body">
+        <form action="#" id="form-data">
+          <div class="row g-2">
+            <div class="col">
+              <label for="exampleFormControlTextarea1" class="form-label"
+                >Full Name</label
+              >
+              <input
+                class="form-control"
+                type="text"
+                id="fullName"
+                placeholder="Enter here..."
+              />
+            </div>
+
+            <div class="col-md-auto">
+              <label for="no-subjects" class="form-label">No of Subjects</label>
+              <select class="form-select" id="no-subjects">
+                <option selected disabled>Open this select menu</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+              </select>
+            </div>
+
+            <div class="col-md-5">
+              <label for="exam  pleFormControlInput1" class="form-label"
+                >Total Marks</label
+              >
+              <input
+                style="width: 50%"
+                class="form-control"
+                type="number"
+                min="100"
+                max="1000"
+                id="total-marks"
+                placeholder="100"
+              />
+            </div>
+
+            <!-- <span id="errorMsgForCode"></span> -->
+          </div>
+
+          <div class="text-center col-12 mt-3">
+            <button
+              class="btn btn-primary"
+              type="submit"
+              onclick="addMarksheet()"
+            >
+              Add Marksheet
+            </button>
+
+            <button
+              class="btn btn-primary"
+              type="submit"
+              onclick="createJSON()"
+            >
+              Create JSON
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="mt-5 col-12 card text-center">
+        <div class="card-header">All Marksheets</div>
+        <div class="row">
+          <table border="2" class="table">
+            <!-- <thead class="thead-dark">
+              <tr>
+                <th scope="col">No.</th>
+                <th scope="col">Total</th>
+                <th scope="col">Obtain</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody> -->
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
