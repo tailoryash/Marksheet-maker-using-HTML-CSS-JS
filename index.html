@@ -33,7 +33,9 @@
                 type="text"
                 id="fullName"
                 placeholder="Enter here..."
+                onblur="validateName()"
               />
+              <span id="name-error"></span>
             </div>
 
             <div class="col-md-auto">
@@ -64,7 +66,9 @@
                 max="1000"
                 id="total-marks"
                 placeholder="100"
+                onblur="validateTotalMarks()"
               />
+              <span id="total-marks-error"></span>
             </div>
 
             <!-- <span id="errorMsgForCode"></span> -->
