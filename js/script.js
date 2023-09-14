@@ -1,16 +1,21 @@
+let subsJsonList = [];
+let personJsonList = [];
+let totalObtainMarks = 0;
+let name;
+let noOfSubjects;
+let totalMarks;
+let countTable = 0;
 function addMarksheet() {
+  countTable = countTable + 1;
+  let table = document.querySelector("table");
+  const tableBody = document.createElement("tbody");
   if (validateName() & validateTotalMarks()) {
     let inputSub;
     var inputObtain;
     var lastRowThirdCellTotal;
-    const name = document.getElementById("fullName").value;
-    const noOfSubjects = document.getElementById("no-subjects").value;
-    const totalMarks = document.getElementById("total-marks").value;
-    let totalObtainMarks = 0;
-
-    let table = document.querySelector("table");
-    const tableBody = document.createElement("tbody");
-    const divTag = document.createElement("div");
+    name = document.getElementById("fullName").value;
+    noOfSubjects = document.getElementById("no-subjects").value;
+    totalMarks = document.getElementById("total-marks").value;
 
     const headingRow = document.createElement("tr");
     const heading1 = document.createElement("th");
@@ -35,6 +40,8 @@ function addMarksheet() {
     tableBody.appendChild(headingRow);
 
     let obtainArray = [];
+    let subName;
+    let obtainMark;
 
     for (let i = 0; i <= noOfSubjects; i++) {
       const row = document.createElement("tr");
@@ -43,9 +50,11 @@ function addMarksheet() {
       const cell3 = document.createElement("td");
       const cell4 = document.createElement("td");
       let cell4Span = document.createElement("span");
-      cell4Span.id = "mark-result";
+      cell4Span.id = "mark-result" + countTable;
+      cell4Span.style.color = "blue";
+      cell4Span.style.fontWeight = "bold";
 
-      var lastRowThirdCellTotal = document.createElement("b");
+      // var lastRowThirdCellTotal = document.createElement("b");
 
       const cellText1 = document.createTextNode(`${i + 1}`);
 
@@ -53,10 +62,13 @@ function addMarksheet() {
         inputSub = document.createElement("input");
         inputSub.type = "text";
         inputSub.class = "form-control";
-        inputSub.id = "sub-name" + i;
+        inputSub.id = "sub-name" + i + countTable;
         inputSub.placeholder = "enter subject name";
         let subError = document.createElement("span");
         subError.id = "sub-error";
+        inputSub.onblur = function () {
+          subName = document.getElementById("sub-name" + i + countTable).value;
+        };
 
         const cellText3 = document.createTextNode(`${totalMarks}`);
 
@@ -66,27 +78,27 @@ function addMarksheet() {
         inputObtain.min = `${0}`;
         inputObtain.class = "form-control";
         inputObtain.placeholder = "0";
-        inputObtain.id = "obtain-marks" + i;
-        inputObtain.onblur = function () {
-          let obtainMark = parseFloat(
-            document.getElementById("obtain-marks" + i).value
-          );
-          // console.log(obtainMark);
-          if (obtainMark >= 0 && obtainMark <= totalMarks) {
-            totalObtainMarks += obtainMark;
-            obtainArray.push(obtainMark);
-            console.log(totalObtainMarks);
+        inputObtain.id = "obtain-marks" + i + countTable;
+        // inputObtain.onblur = function () {
+        //   obtainMark = parseFloat(
+        //     document.getElementById("obtain-marks" + i).value
+        //   );
+        //   // console.log(obtainMark);
+        //   if (obtainMark >= 0 && obtainMark <= totalMarks) {
+        //     totalObtainMarks += obtainMark;
+        //     obtainArray.push(obtainMark);
+        //     // console.log(totalObtainMarks);
 
-            // let obtainTotalValue = document.createTextNode(
-            //   `${totalObtainMarks}`
-            // );
-            // cell4Span.appendChild(obtainTotalValue);
-            document.getElementById("mark-result").innerHTML =
-              `${totalObtainMarks}` + "/" + `${noOfSubjects * totalMarks}`;
+        //     // let obtainTotalValue = document.createTextNode(
+        //     //   `${totalObtainMarks}`
+        //     // );
+        //     // cell4Span.appendChild(obtainTotalValue);
+        //     document.getElementById("mark-result").innerHTML =
+        //       `${totalObtainMarks}` + "/" + `${noOfSubjects * totalMarks}`;
 
-            obtainMark = 0;
-          }
-        };
+        //     obtainMark = 0;
+        //   }
+        // };
 
         cell2.appendChild(inputSub);
         cell2.appendChild(subError);
@@ -102,44 +114,32 @@ function addMarksheet() {
         const totalDisplayValue = document.createTextNode(
           `${noOfSubjects * totalMarks}`
         );
+        totalDisplayValue.id = "total-subjects-marks" + countTable;
 
         lastRowSecondCellTotal.appendChild(totalDisplayValue);
         cell3.appendChild(lastRowSecondCellTotal);
         cell4.appendChild(cell4Span);
       }
 
-      console.log(obtainArray);
+      // console.log(obtainArray);
       cell1.appendChild(cellText1);
 
       row.appendChild(cell1);
       row.appendChild(cell2);
       row.appendChild(cell3);
       row.appendChild(cell4);
-      divTag.appendChild(row);
-      // divTag.id = "div" + i;
-      // tableBody.appendChild(divTag);
+
       tableBody.appendChild(row);
-      divTag.appendChild(tableBody);
-
-      let person = {
-        fullName: name,
-        subjects: [
-          {
-            name: document.getElementById("sub-name" + i).value,
-            total: totalMarks,
-            obtainmark: document.getElementById("obtain-marks" + i).value,
-          },
-        ],
-      };
+      // divTag.appendChild(tableBody);
     }
-
     table.appendChild(tableBody);
     table.setAttribute("border", "2");
+
     console.log("Name is:", name);
     console.log("Total subjects:", noOfSubjects);
     console.log("Total marks:", totalMarks);
 
-    document.getElementById("form-data").reset();
+    // document.getElementById("form-data").reset();
     // console.log("inputSub", inputSub);
     // for (let i = 0; i < noOfSubjects; i++) {
     //   let subName = document.getElementById("sub-name" + i).value;
@@ -150,6 +150,8 @@ function addMarksheet() {
     //     console.log("false");
     //   }
     // }
+    // createJsonForPerson(name, subsJsonList);
+    // createJsonForSubject(subName, totalMarks, obtainMark);
   } else {
     validateName();
     validateTotalMarks();
@@ -158,8 +160,27 @@ function addMarksheet() {
   // totalObtainMarks = 0;
 }
 
+function calTotalMarks() {
+  noOfSubjects = document.getElementById("no-subjects").value;
+  totalMarks = Number(document.getElementById("total-marks").value);
+  for (let i = 0; i < noOfSubjects; i++) {
+    obtainMark = parseFloat(
+      document.getElementById("obtain-marks" + i + countTable).value
+    );
+    // console.log(obtainMark);
+    if (obtainMark >= 0 && obtainMark <= totalMarks) {
+      totalObtainMarks += obtainMark;
+      document.getElementById("mark-result" + countTable).innerHTML =
+        `${totalObtainMarks}` + "/" + `${noOfSubjects * totalMarks}`;
+
+      obtainMark = 0;
+    }
+  }
+  totalObtainMarks = 0;
+}
+
 function validateName() {
-  var name = document.getElementById("fullName").value;
+  name = document.getElementById("fullName").value;
   if (name.trim() == "") {
     document.querySelector("#name-error").innerHTML = "Name is Required";
     return false;
@@ -187,12 +208,10 @@ function validateTotalMarks() {
     document.getElementById("total-marks-error").innerHTML =
       "marks should be greater than zero or only digits allowed";
     return false;
-  } else {
-    if (!totalMarks.match(/^(10|1[0-9]{2}|[2-9][0-9]{2}|1000)$/)) {
-      document.getElementById("total-marks-error").innerHTML =
-        "marks should be 10-1000";
-      return false;
-    }
+  } else if (!totalMarks.match(/^\d{2,}$/)) {
+    document.getElementById("total-marks-error").innerHTML =
+      "marks should be 10-1000";
+    return false;
   }
 
   document.getElementById("total-marks-error").innerHTML = "";
@@ -215,4 +234,59 @@ function validateSubjects(subName) {
   }
   document.querySelector("#sub-error").innerHTML = "";
   return true;
+}
+
+function createJsonForSubject(subName, totalMarks, obtainMark) {
+  let subject = {
+    name: subName,
+    total: totalMarks,
+    obtainmark: obtainMark,
+  };
+
+  subsJsonList.push(subject);
+}
+
+function createJsonForPerson(fullName, subsJsonList) {
+  let person = {
+    fullName: fullName,
+    subjects: subsJsonList,
+  };
+  personJsonList.push(person);
+}
+
+function jsonCreate() {
+  noOfSubjects = document.getElementById("no-subjects").value;
+  name = document.getElementById("fullName").value;
+
+  let subName;
+  let obtainMark;
+  let totalMarks;
+
+  for (let i = 0; i < noOfSubjects; i++) {
+    subName = document.getElementById("sub-name" + i + countTable).value;
+    obtainMark = parseFloat(
+      document.getElementById("obtain-marks" + i + countTable).value
+    );
+    totalMarks = Number(document.getElementById("total-marks").value);
+    createJsonForSubject(subName, totalMarks, obtainMark);
+  }
+
+  createJsonForPerson(name, subsJsonList);
+  subsJsonList = [];
+  displayJson();
+}
+
+function displayJson() {
+  // console.log("Subjects JSON : ", subsJsonList);
+  console.log("Person JSON : ", personJsonList);
+  // subsJsonList = [];
+  // personJsonList = [];
+  // console.log("Subjects JSON : ", subsJsonList);
+  // console.log("Person JSON : ", personJsonList);
+}
+
+function resetAllData() {
+  document.getElementById("form-data").reset();
+  let table = document.getElementById("tableData");
+  table.innerHTML = "";
 }

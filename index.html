@@ -62,7 +62,7 @@
                 style="width: 50%"
                 class="form-control"
                 type="number"
-                min="100"
+                min="10"
                 max="1000"
                 id="total-marks"
                 placeholder="100"
@@ -86,9 +86,25 @@
             <button
               class="btn btn-primary"
               type="submit"
-              onclick="createJSON()"
+              id="json-creation"
+              onclick="jsonCreate()"
             >
               Create JSON
+            </button>
+            <button
+              class="btn btn-primary"
+              type="submit"
+              id="cal-marks"
+              onclick="calTotalMarks()"
+            >
+              Calculate Total Marks
+            </button>
+            <button
+              class="btn btn-secondary"
+              type="reset"
+              onclick="resetAllData()"
+            >
+              Reset
             </button>
           </div>
         </form>
@@ -97,7 +113,7 @@
       <div class="mt-5 col-12 card text-center">
         <div class="card-header">All Marksheets</div>
         <div class="row">
-          <table border="2" class="table">
+          <table id="tableData">
             <!-- <thead class="thead-dark">
               <tr>
                 <th scope="col">No.</th>

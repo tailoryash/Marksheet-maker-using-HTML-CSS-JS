@@ -1,0 +1,1 @@
+[{"fullName":"yash tailor","subjects":[{"name":"s1","total":100,"obtainmark":99}]},{"fullName":"yash tailor","subjects":[{"name":"s2","total":150,"obtainmark":123},{"name":"s3","total":150,"obtainmark":123}]},{"fullName":"yash tailor","subjects":[{"name":"s4","total":50,"obtainmark":45},{"name":"s5","total":50,"obtainmark":43},{"name":"s6","total":50,"obtainmark":30}]}]
