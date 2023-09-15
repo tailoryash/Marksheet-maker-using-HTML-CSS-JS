@@ -79,27 +79,6 @@ function addMarksheet() {
         inputObtain.class = "form-control";
         inputObtain.placeholder = "0";
         inputObtain.id = "obtain-marks" + i + countTable;
-        // inputObtain.onblur = function () {
-        //   obtainMark = parseFloat(
-        //     document.getElementById("obtain-marks" + i).value
-        //   );
-        //   // console.log(obtainMark);
-        //   if (obtainMark >= 0 && obtainMark <= totalMarks) {
-        //     totalObtainMarks += obtainMark;
-        //     obtainArray.push(obtainMark);
-        //     // console.log(totalObtainMarks);
-
-        //     // let obtainTotalValue = document.createTextNode(
-        //     //   `${totalObtainMarks}`
-        //     // );
-        //     // cell4Span.appendChild(obtainTotalValue);
-        //     document.getElementById("mark-result").innerHTML =
-        //       `${totalObtainMarks}` + "/" + `${noOfSubjects * totalMarks}`;
-
-        //     obtainMark = 0;
-        //   }
-        // };
-
         cell2.appendChild(inputSub);
         cell2.appendChild(subError);
         cell3.appendChild(cellText3);
@@ -289,4 +268,137 @@ function resetAllData() {
   document.getElementById("form-data").reset();
   let table = document.getElementById("tableData");
   table.innerHTML = "";
+}
+
+function viewMarksheets() {
+  let listOfMarksheet;
+  document.getElementById("form-data").reset();
+  let table = document.getElementById("tableData");
+  table.innerHTML = "";
+
+  let jsonFile = "jsonData.txt";
+  let httpRequest = new XMLHttpRequest();
+
+  httpRequest.onreadystatechange = function () {
+    if (httpRequest.readyState == 4) {
+      let jsonData = JSON.parse(httpRequest.responseText);
+      listOfMarksheet = jsonData;
+      // console.log(listOfMarksheet);
+      displayJsonToTable(listOfMarksheet);
+    }
+  };
+
+  httpRequest.open("GET", jsonFile, true);
+  httpRequest.send();
+}
+
+function displayJsonToTable(listOfMarksheet) {
+  let counter = 0;
+  counter++;
+  let countSubjects = 0;
+  let table = document.querySelector("table");
+  const tableBody = document.createElement("tbody");
+  // var lastRowThirdCellTotal;
+
+  for (let i = 0; i < listOfMarksheet.length; i++) {
+    let user_name = listOfMarksheet[i].fullName;
+    let subLists = listOfMarksheet[i].subjects;
+    const nameHeadingRow = document.createElement("b");
+    const nameHeadingData = document.createTextNode(
+      `Student Name is : ${user_name}`
+    );
+    nameHeadingRow.appendChild(nameHeadingData);
+    tableBody.appendChild(nameHeadingRow);
+    const headingRow = document.createElement("tr");
+    const heading1 = document.createElement("th");
+    const heading2 = document.createElement("th");
+    const heading3 = document.createElement("th");
+    const heading4 = document.createElement("th");
+    const serialNo = document.createTextNode("No.");
+    const subject = document.createTextNode("Subject");
+    const total = document.createTextNode("Total");
+    const obtain = document.createTextNode("Obtain");
+    headingRow.appendChild(heading1);
+    headingRow.appendChild(heading2);
+    headingRow.appendChild(heading3);
+    headingRow.appendChild(heading4);
+
+    heading1.appendChild(serialNo);
+    heading2.appendChild(subject);
+    heading3.appendChild(total);
+    heading4.appendChild(obtain);
+    tableBody.appendChild(headingRow);
+
+    // console.log("First Name:", user_name);
+    // console.log("Subjects : ", subLists);
+    let totalMarks = 0;
+    let totalObtainMarks = 0;
+
+    for (let j = 0; j <= subLists.length; j++) {
+      const row = document.createElement("tr");
+      const cell1 = document.createElement("td");
+      const cell2 = document.createElement("td");
+      const cell3 = document.createElement("td");
+      const cell4 = document.createElement("td");
+      const cellText1 = document.createTextNode(`${j + 1}`);
+      let cell4Span = document.createElement("span");
+      cell4Span.id = "mark-result" + counter;
+      cell4Span.style.color = "blue";
+      cell4Span.style.fontWeight = "bold";
+      countSubjects = countSubjects + 1;
+      let subName;
+      let total;
+      let obtainMark;
+
+      let subSize = subLists.length;
+      if (j < subLists.length) {
+        subName = subLists[j].name;
+        total = subLists[j].total;
+        totalMarks += total;
+        obtainMark = subLists[j].obtainmark;
+        totalObtainMarks += obtainMark;
+        // console.log("Subject name: ", subName);
+        // console.log("Total : ", total);
+        // console.log("Obtain mark :", obtainMark);
+
+        const cellText2 = document.createTextNode(`${subName}`);
+        const cellText3 = document.createTextNode(`${total}`);
+        const cellText4 = document.createTextNode(`${obtainMark}`);
+
+        cell2.appendChild(cellText2);
+        cell3.appendChild(cellText3);
+        cell4.appendChild(cellText4);
+      } else {
+        const lastRowFirstCellTotal = document.createElement("b");
+        const lastRowFirstCellTotalText = document.createTextNode("Total");
+        lastRowFirstCellTotal.appendChild(lastRowFirstCellTotalText);
+        cell2.appendChild(lastRowFirstCellTotal);
+
+        let lastRowSecondCellTotal = document.createElement("b");
+        let totalDisplayValue = document.createTextNode(`${totalMarks}`);
+        totalDisplayValue.id = "total-subjects-marks" + counter;
+        let spanTagForTotalObtainsMarks = document.createTextNode(
+          `${totalObtainMarks} / ${totalMarks}`
+        );
+
+        cell4Span.appendChild(spanTagForTotalObtainsMarks);
+        lastRowSecondCellTotal.appendChild(totalDisplayValue);
+        cell3.appendChild(lastRowSecondCellTotal);
+        cell4.appendChild(cell4Span);
+      }
+      cell1.appendChild(cellText1);
+      row.appendChild(cell1);
+      row.appendChild(cell2);
+      row.appendChild(cell3);
+      row.appendChild(cell4);
+      tableBody.appendChild(row);
+    }
+
+    const divider = document.createElement("hr");
+    divider.style.width = "100%";
+    divider.style.fontWeight = "bold";
+    // console.log(countSubjects);
+    tableBody.appendChild(divider);
+  }
+  table.appendChild(tableBody);
 }
